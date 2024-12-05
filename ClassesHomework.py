@@ -91,51 +91,65 @@ class Reviewer(Mentor): # Эксперты, проверяющие домашн�
                 f"Фамилия: {self.surname}")
 
 
+# Функции для подсчета средней оценки:
+def average_grade(students, course):
+    total = sum(student.get_average_grade() for student in students if course in student.grades)
+    count = sum(1 for student in students if course in student.grades)
+    return total / count if count > 0 else 0
+
+def average_lecturer_grade(lecturers, course):
+    total = sum(lecturer.get_average_grade() for lecturer in lecturers if course in lecturer.grades)
+    count = sum(1 for lecturer in lecturers if course in lecturer.grades)
+    return total / count if count > 0 else 0
+
+
+# Создаем экземпляры классов:
+student1 = Student("Roy", "Maccinly", "boy")
+student1.courses_in_progress += ['Python', 'Java']
+student1.finished_courses += ['DevOps']
+student2 = Student("Rina", "Grey", "girl")
+student2.courses_in_progress += ['Python', 'C++']
+student2.finished_courses += ['Java']
+
+lecturer1 = Lecturer('Mark', 'Twain')
+lecturer1.courses_attached += ['Python']
+lecturer2 = Lecturer('Alice', 'Wonder')
+lecturer2.courses_attached += ['Python']
+
+reviewer1 = Reviewer('Jane', 'Doe')
+reviewer1.courses_attached += ['Python']
+reviewer2 = Reviewer('John', 'Smith')
+reviewer2.courses_attached += ['Python']
+
+
 # Примеры использования:
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
-best_student.finished_courses += ['Java']
+# Эксперты проверяют домашние задания
+reviewer1.check_homework(student1, 'Python', 9)
+reviewer2.check_homework(student1, 'Python', 8)
+reviewer1.check_homework(student2, 'Python', 9)
 
-cool_mentor = Mentor('Some', 'Buddy')
-cool_mentor.courses_attached += ['Python']
+# Студенты выставляют оценки лекторам
+student1.rate_lecturer(lecturer1, 'Python', 10)
+student2.rate_lecturer(lecturer1, 'Python', 9)
+student1.rate_lecturer(lecturer2, 'Python', 7)
 
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
-cool_mentor.rate_hw(best_student, 'Python', 10)
 
-print(best_student.grades)
-
-# Создание лекторов и экспертов
-lecturer = Lecturer('Mark', 'Twin')
-lecturer.courses_attached += ['Python']
-
-reviewer = Reviewer('Jane', 'Smith')
-reviewer.courses_attached += ['Python']
-
-# Эксперт проверяет домашние задания
-reviewer.check_homework(best_student, 'Python', 9)
-
-print(best_student.grades)
-
-# Студент выставляет оценку лектору
-best_student.rate_lecturer(lecturer, 'Python', 10)
-best_student.rate_lecturer(lecturer, 'Python', 8)
-
-print(lecturer.grades)
+# Вывод информации
+print(student1)
+print("---------------------------")
+print(student2)
+print("---------------------------")
+print(lecturer1)
+print("---------------------------")
+print(lecturer2)
+print("---------------------------")
+print(reviewer1)
+print("---------------------------")
+print(reviewer2)
 print("---------------------------")
 
-# Вывод информации о студентах, лекторах и рецензентах
-print(best_student)
-print("---------------------------")
-print(lecturer)
-print("---------------------------")
-print(reviewer)
-print("---------------------------")
+# Подсчет средней оценки за домашние задания студентов по курсу 'Python'
+print(f"Средняя оценка студентов по курсу 'Python': {average_grade([student1, student2], 'Python'):.2f}")
 
-# Примеры сравнения
-other_student = Student('John', 'Doe', 'your_gender')
-other_student.courses_in_progress += ['Python']
-other_student.rate_lecturer(lecturer, 'Python', 9)
-
-print(best_student < other_student)  # Сравнение студентов
-print(lecturer < Lecturer('Alice', 'Wonderland'))  # Сравнение лекторов (в данном случае без оценок)
+# Подсчет средней оценки за лекции лекторов по курсу 'Python'
+print(f"Средняя оценка лекторов по курсу 'Python': {average_lecturer_grade([lecturer1, lecturer2], 'Python'):.2f}")
