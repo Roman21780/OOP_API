@@ -11,7 +11,8 @@ class Student:
         self.grades = {}
 
     def rate_lecturer(self, lecturer, course, grade):
-        if isinstance(lecturer, Lecturer) and course in lecturer.courses_attached and course in self.courses_in_progress:
+        if isinstance(lecturer,
+                      Lecturer) and course in lecturer.courses_attached and course in self.courses_in_progress:
             if course in lecturer.grades:
                 lecturer.grades[course].append(grade)
             else:
@@ -52,7 +53,8 @@ class Mentor:
         else:
             return 'Ошибка'
 
-class Lecturer(Mentor): # Лекторы
+
+class Lecturer(Mentor):  # Лекторы
     def __init__(self, name, surname):
         super().__init__(name, surname)
         self.grades = {}
@@ -73,7 +75,7 @@ class Lecturer(Mentor): # Лекторы
         return NotImplemented
 
 
-class Reviewer(Mentor): # Эксперты, проверяющие домашние задания
+class Reviewer(Mentor):  # Эксперты, проверяющие домашние задания
     def __init__(self, name, surname):
         super().__init__(name, surname)
 
@@ -96,6 +98,7 @@ def average_grade(students, course):
     total = sum(student.get_average_grade() for student in students if course in student.grades)
     count = sum(1 for student in students if course in student.grades)
     return total / count if count > 0 else 0
+
 
 def average_lecturer_grade(lecturers, course):
     total = sum(lecturer.get_average_grade() for lecturer in lecturers if course in lecturer.grades)
@@ -121,7 +124,6 @@ reviewer1.courses_attached += ['Python']
 reviewer2 = Reviewer('John', 'Smith')
 reviewer2.courses_attached += ['Python']
 
-
 # Примеры использования:
 # Эксперты проверяют домашние задания
 reviewer1.check_homework(student1, 'Python', 9)
@@ -132,7 +134,6 @@ reviewer1.check_homework(student2, 'Python', 9)
 student1.rate_lecturer(lecturer1, 'Python', 10)
 student2.rate_lecturer(lecturer1, 'Python', 9)
 student1.rate_lecturer(lecturer2, 'Python', 7)
-
 
 # Вывод информации
 print(student1)
