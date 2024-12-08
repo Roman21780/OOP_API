@@ -29,7 +29,8 @@ def read_cookbook(file_path):
 
         for _ in range(ingredient_count):
             if index >= len(lines):
-                raise ValueError("Не хватает строк для ингредиентов для блюда '{}', ожидается: {}".format(dish_name, ingredient_count))
+                raise ValueError("Не хватает строк для ингредиентов для блюда '{}', ожидается: {}".format(dish_name,
+                                                                                                          ingredient_count))
 
             ingredient_info = lines[index].strip().split(' | ')
             if len(ingredient_info) != 3:
@@ -51,6 +52,35 @@ def read_cookbook(file_path):
     return cook_book
 
 
+def get_shop_list_by_dishes(dishes, person_count):
+    cook_book = read_cookbook(file_path)
+    # Создадим пустой словарь для хранения итоговых ингредиентов
+    shop_list = {}
+    # Пройдемся по каждому блюду в списке и получим его ингредиенты из 'cook-book'
+    for dish in dishes:
+        if dish not in cook_book:
+            raise ValueError(f"Блюдо '{dish}' не найдено в рецептах.")
+
+        ingredients = cook_book[dish]
+
+        for ingredient in ingredients:
+            ingredient_name = ingredient['ingredient_name']
+            # Умножим количество каждого ингредиента на количество персон
+            quantity = ingredient['quantity'] * person_count
+            measure = ingredient['measure']
+
+            # Если ингредиент уже присутствует в итоговом словаре, просто обновим его количество
+            if ingredient_name in shop_list:
+                shop_list[ingredient_name]['quantity'] += quantity
+            else:
+                shop_list[ingredient_name] = {
+                    'measure': measure,
+                    'quantity': quantity
+                }
+    # Вернем итоговый словарь
+    return shop_list
+
+
 if __name__ == "__main__":
     file_path = r'C:\Python\pythonProject1\OOP_API\FilesHomeWork\recipes.txt'
     recipes = read_cookbook(file_path)
@@ -62,3 +92,6 @@ if __name__ == "__main__":
     #     for ingredient in ingredients:
     #         print(f"ingredient_name: {ingredient['ingredient_name']}, quantity: {ingredient['quantity']}, measure: {ingredient['measure']}")
     #     print() # Пустая строка после каждого блюда
+
+    result = get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+    print(result)
