@@ -95,3 +95,36 @@ if __name__ == "__main__":
 
     result = get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
     print(result)
+
+# Список файлов для объединения
+file_names = [
+    "1.txt",
+    "2.txt",
+    "3.txt"
+]
+
+# Список для хранения информации о файлах (имя файла и количество строк)
+files_info = []
+
+# Считываем количество строк в каждом файле и сохраняем информацию
+for file_name in file_names:
+    with open(file_name, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+        line_count = len(lines)
+        files_info.append((file_name, line_count, lines))
+
+# Сортируем файлы по количеству строк
+files_info.sort(key=lambda x: x[1])
+
+# Путь к результирующему файлу
+output_file = "merged_output.txt"
+
+# Записываем содержимое в результирующий файл
+with open(output_file, 'w', encoding='utf-8') as out_f:
+    for file_name, line_count, lines in files_info:
+        out_f.write(f"{file_name}\n")
+        out_f.write(f"{line_count}\n")
+        out_f.writelines(lines)
+
+print(f"Содержимое файлов объединено и записано в '{output_file}'")
+
